@@ -6,42 +6,39 @@ export default function FunctionalComponent() {
 
   let myRef = React.createRef();
 
-  function handlerCounter() {
-    //другой способ обновления состояния (без стрелочной функции внутри setCounter)
-    let currentCounter = counter;
-    currentCounter++;
-    return setCounter(currentCounter);
-  }
+  let handlerGoldDigger = () => {
+    setCounter((counter) => counter + 1);
+    //пример ниже не работает. разобраться почему
+    // let currentCounter = counter;
+    // counter++;
+    // setCounter(currentCounter);
+  };
 
-  const handlerAddComment = () => {
-    let commentValue = myRef.current.value;
-    let comments = [...comment, commentValue];
+  let handlerComment = () => {
+    let commentCurrentValue = myRef.current.value;
+    let comments = [...comment, commentCurrentValue];
     setComment(comments);
-    // setComment([...comment, commentValue]);
-    myRef.current.value = null;
+    myRef.current.value = null
   };
 
   return (
     <>
-      <div>
-        <button onClick={handlerCounter}>Кнопка меняет состояние</button>
-      </div>
-      <div>
-        <h4>{counter % 2 === 0 ? 'even' : 'odd'}</h4>
-      </div>
-      <div>
-        <h3>
-          Состояние: {counter} ({counter % 2 === 0 ? 'чётное' : 'нечётное'})
-        </h3>
-      </div>
+      <button onClick={handlerGoldDigger}>Позолоти ручки!</button>
+      <div>Подарено {counter} золотых</div>
+      <h3>{counter % 2 === 0 ? 'чёт' : 'нечёт'}</h3>
       <div>
         <textarea ref={myRef}></textarea>
         <br />
-        <button onClick={handlerAddComment}>Добавить комментарий</button>
+        <button onClick={handlerComment}>Оставить отзыв</button>
       </div>
-      <ul>{comment.map((props) => (
-        <li>{props}</li>
-        ))}</ul>
+      <div>
+        <label>Отзывы:</label>
+        <ul>
+          {comment.map((item, index) => (
+            <li key={index.toString()}>{item}</li>
+            ))}
+        </ul>
+      </div>
     </>
   );
 }
